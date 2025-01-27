@@ -3,6 +3,6 @@ export declare class PlayerController {
     private readonly playerService;
     constructor(playerService: PlayerService);
     createPlayer(body: {
-        playerId: string;
+        id: string;
     }): void;
 }

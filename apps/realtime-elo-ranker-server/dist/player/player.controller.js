@@ -20,7 +20,11 @@ let PlayerController = class PlayerController {
         this.playerService = playerService;
     }
     createPlayer(body) {
-        this.playerService.createPlayer(body.playerId);
+        if (!body.id) {
+            console.log('playerId is missing');
+            throw new common_1.HttpException('playerId is required', common_1.HttpStatus.BAD_REQUEST);
+        }
+        this.playerService.createPlayer(body.id);
     }
 };
 exports.PlayerController = PlayerController;

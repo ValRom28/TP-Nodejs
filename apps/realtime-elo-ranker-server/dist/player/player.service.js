@@ -16,8 +16,11 @@ let PlayerService = class PlayerService {
     constructor(rankingCacheService) {
         this.rankingCacheService = rankingCacheService;
     }
-    createPlayer(playerId) {
-        this.rankingCacheService.setRanking(playerId, 1000);
+    createPlayer(id) {
+        if (!id) {
+            throw new Error("playerId is required");
+        }
+        this.rankingCacheService.setRanking(id, 1000);
     }
 };
 exports.PlayerService = PlayerService;
