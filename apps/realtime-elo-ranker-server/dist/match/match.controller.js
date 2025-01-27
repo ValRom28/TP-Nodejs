@@ -20,7 +20,8 @@ let MatchController = class MatchController {
         this.matchService = matchService;
     }
     postMatch(body) {
-        return this.matchService.addMatch(body.adversaryA, body.adversaryB, body.result);
+        console.log(`Received body: ${JSON.stringify(body)}`);
+        return this.matchService.addMatch(body.winner, body.loser, body.draw);
     }
 };
 exports.MatchController = MatchController;

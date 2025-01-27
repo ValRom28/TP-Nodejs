@@ -18,7 +18,7 @@ let PlayerService = class PlayerService {
     }
     createPlayer(id) {
         if (!id) {
-            throw new Error("playerId is required");
+            throw new Error("id is required");
         }
         this.rankingCacheService.setRanking(id, 1000);
     }

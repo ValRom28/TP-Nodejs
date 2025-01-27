@@ -4,12 +4,12 @@ import { Injectable } from '@nestjs/common';
 export class RankingCacheService {
   private rankingData: Record<string, number> = {};
 
-  public getRanking(playerId: string): number | undefined {
-    return this.rankingData[playerId];
+  public getRanking(id: string): number | undefined {
+    return this.rankingData[id];
   }
 
-  public setRanking(playerId: string, ranking: number): void {
-    this.rankingData[playerId] = ranking;
+  public setRanking(id: string, ranking: number): void {
+    this.rankingData[id] = ranking;
   }
 
   public getAllRankings(): Record<string, number> {

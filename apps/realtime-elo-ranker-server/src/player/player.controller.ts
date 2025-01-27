@@ -8,8 +8,8 @@ export class PlayerController {
   @Post()
   createPlayer(@Body() body: { id: string }): void {
     if (!body.id) {
-      console.log('playerId is missing');
-      throw new HttpException('playerId is required', HttpStatus.BAD_REQUEST);
+      console.log('id is missing');
+      throw new HttpException('id is required', HttpStatus.BAD_REQUEST);
     }
 
     this.playerService.createPlayer(body.id);

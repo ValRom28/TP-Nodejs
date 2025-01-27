@@ -5,7 +5,7 @@ export declare class MatchService {
     private readonly rankingEventsService;
     private readonly matchHistory;
     constructor(rankingCacheService: RankingCacheService, rankingEventsService: RankingEventsService);
-    addMatch(adversaryA: string, adversaryB: string, result: string): {
+    addMatch(winner: string, loser: string, draw: boolean): {
         winner: {
             id: string;
             rank: number;

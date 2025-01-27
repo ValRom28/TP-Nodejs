@@ -13,33 +13,26 @@ export class MatchService {
     this.matchHistory = [];
   }
 
-  public addMatch(adversaryA: string, adversaryB: string, result: string): { winner: { id: string, rank: number }, loser: { id: string, rank: number } } {
-    const rankingA = this.rankingCacheService.getRanking(adversaryA) || 1000;
-    const rankingB = this.rankingCacheService.getRanking(adversaryB) || 1000;
+  public addMatch(winner: string, loser: string, draw: boolean): { winner: { id: string, rank: number }, loser: { id: string, rank: number } } {
+    const rankingWinner = this.rankingCacheService.getRanking(winner) || 1000;
+    const rankingLoser = this.rankingCacheService.getRanking(loser) || 1000;
 
-    let newRankingA = rankingA;
-    let newRankingB = rankingB;
-    let winner = { id: '', rank: 0 };
-    let loser = { id: '', rank: 0 };
+    let newRankingWinner = rankingWinner;
+    let newRankingLoser = rankingLoser;
 
-    if (result === 'LEFT_WIN') {
-      newRankingA += 10;
-      newRankingB -= 10;
-      winner = { id: adversaryA, rank: newRankingA };
-      loser = { id: adversaryB, rank: newRankingB };
-    } else if (result === 'RIGHT_WIN') {
-      newRankingA -= 10;
-      newRankingB += 10;
-      winner = { id: adversaryB, rank: newRankingB };
-      loser = { id: adversaryA, rank: newRankingA };
+    if (draw) {
+      return { winner: { id: winner, rank: newRankingWinner }, loser: { id: loser, rank: newRankingLoser } };
+    } else {
+      newRankingWinner += 10;
+      newRankingLoser -= 10;
     }
 
-    this.rankingCacheService.setRanking(adversaryA, newRankingA);
-    this.rankingCacheService.setRanking(adversaryB, newRankingB);
+    this.rankingCacheService.setRanking(winner, newRankingWinner);
+    this.rankingCacheService.setRanking(loser, newRankingLoser);
     this.rankingEventsService.notifySubscribers();
 
-    this.matchHistory.push(`${adversaryA} vs ${adversaryB}: ${result}`);
-    return { winner, loser };
+    this.matchHistory.push(`${winner} vs ${loser}: ${draw ? 'DRAW' : 'WIN'}`);
+    return { winner: { id: winner, rank: newRankingWinner }, loser: { id: loser, rank: newRankingLoser } };
   }
 
   public getMatchHistory(): string[] {

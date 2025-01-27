@@ -12,11 +12,11 @@ let RankingCacheService = class RankingCacheService {
     constructor() {
         this.rankingData = {};
     }
-    getRanking(playerId) {
-        return this.rankingData[playerId];
+    getRanking(id) {
+        return this.rankingData[id];
     }
-    setRanking(playerId, ranking) {
-        this.rankingData[playerId] = ranking;
+    setRanking(id, ranking) {
+        this.rankingData[id] = ranking;
     }
     getAllRankings() {
         return this.rankingData;

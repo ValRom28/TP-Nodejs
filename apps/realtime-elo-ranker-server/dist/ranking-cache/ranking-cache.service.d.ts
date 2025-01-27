@@ -1,6 +1,6 @@
 export declare class RankingCacheService {
     private rankingData;
-    getRanking(playerId: string): number | undefined;
-    setRanking(playerId: string, ranking: number): void;
+    getRanking(id: string): number | undefined;
+    setRanking(id: string, ranking: number): void;
     getAllRankings(): Record<string, number>;
 }

@@ -7,7 +7,7 @@ export class PlayerService {
 
   public createPlayer(id: string): void {
     if (!id) {
-      throw new Error("playerId is required");
+      throw new Error("id is required");
     }
     this.rankingCacheService.setRanking(id, 1000);
   }

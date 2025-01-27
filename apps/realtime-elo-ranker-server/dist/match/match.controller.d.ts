@@ -3,9 +3,9 @@ export declare class MatchController {
     private readonly matchService;
     constructor(matchService: MatchService);
     postMatch(body: {
-        adversaryA: string;
-        adversaryB: string;
-        result: string;
+        winner: string;
+        loser: string;
+        draw: boolean;
     }): {
         winner: {
             id: string;
