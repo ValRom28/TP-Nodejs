@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { DatabaseModule } from './database/database.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RankingController } from './ranking/ranking.controller';
@@ -11,7 +13,7 @@ import { RankingEventsService } from './ranking-events/ranking-events.service';
 import { RankingCacheService } from './ranking-cache/ranking-cache.service';
 
 @Module({
-  imports: [],
+  imports: [EventEmitterModule.forRoot(), DatabaseModule],
   controllers: [AppController, RankingController, MatchController, PlayerController],
   providers: [
     AppService,

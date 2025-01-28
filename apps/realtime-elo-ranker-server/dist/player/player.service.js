@@ -12,20 +12,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PlayerService = void 0;
 const common_1 = require("@nestjs/common");
 const ranking_cache_service_1 = require("../ranking-cache/ranking-cache.service");
+const ranking_events_service_1 = require("../ranking-events/ranking-events.service");
 let PlayerService = class PlayerService {
-    constructor(rankingCacheService) {
+    constructor(rankingCacheService, rankingEventsService) {
         this.rankingCacheService = rankingCacheService;
+        this.rankingEventsService = rankingEventsService;
     }
     createPlayer(id) {
         if (!id) {
             throw new Error("id is required");
         }
         this.rankingCacheService.setRanking(id, 1000);
+        this.rankingEventsService.notifySubscribers(id);
     }
 };
 exports.PlayerService = PlayerService;
 exports.PlayerService = PlayerService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [ranking_cache_service_1.RankingCacheService])
+    __metadata("design:paramtypes", [ranking_cache_service_1.RankingCacheService,
+        ranking_events_service_1.RankingEventsService])
 ], PlayerService);
 //# sourceMappingURL=player.service.js.map

@@ -1,22 +1,36 @@
 import { Controller, Get, Sse } from '@nestjs/common';
+import { Observable, Subject } from 'rxjs';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { RankingService } from './ranking.service';
 import { RankingEventsService } from '../ranking-events/ranking-events.service';
-import { Observable, Subject } from 'rxjs';
 
 interface RankingUpdateEvent {
-  data: Record<string, number>;
+  type: string;
+  player: {
+    id: string;
+    rank: number;
+  };
 }
 
 @Controller('api/ranking')
 export class RankingController {
-  private readonly rankingUpdates = new Subject<Record<string, number>>();
+  private readonly rankingUpdates = new Subject<RankingUpdateEvent>();
 
   constructor(
     private readonly rankingService: RankingService,
     private readonly rankingEventsService: RankingEventsService,
+    private readonly eventEmitter: EventEmitter2,
   ) {
-    this.rankingEventsService.subscribe((ranking) => {
-      this.rankingUpdates.next(ranking);
+    this.eventEmitter.on('ranking.update', (ranking) => {
+      for (const playerId in ranking) {
+        this.rankingUpdates.next({
+          type: 'RankingUpdate',
+          player: {
+            id: playerId,
+            rank: ranking[playerId],
+          },
+        });
+      }
     });
   }
 
@@ -26,13 +40,29 @@ export class RankingController {
   }
 
   @Sse('events')
-  subscribeToRankingUpdates(): Observable<RankingUpdateEvent> {
+  subscribeToRankingUpdates(): Observable<MessageEvent> {
     return new Observable((subscriber) => {
-      const subscription = this.rankingUpdates.subscribe((ranking) => {
-        subscriber.next({ data: ranking });
+      const initialRanking = this.rankingService.getRanking();
+      subscriber.next(new MessageEvent('message', {
+        data: JSON.stringify({ type: 'InitialData', ranking: initialRanking }),
+      }));
+
+      const subscription = this.rankingUpdates.subscribe({
+        next: (rankingUpdate) => {
+          subscriber.next(new MessageEvent('message', {
+            data: JSON.stringify(rankingUpdate),
+          }));
+        },
+        error: (err) => {
+          subscriber.error({
+            type: 'Error',
+            message: err.message,
+          });
+        },
       });
 
-      return () => subscription.unsubscribe();
-    });
-  }
+    return () => subscription.unsubscribe();
+  });
+}
+
 }

@@ -1,8 +1,8 @@
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { RankingCacheService } from '../ranking-cache/ranking-cache.service';
 export declare class RankingEventsService {
     private readonly rankingCacheService;
-    private readonly subscribers;
-    constructor(rankingCacheService: RankingCacheService);
-    subscribe(callback: (ranking: Record<string, number>) => void): void;
-    notifySubscribers(): void;
+    private readonly eventEmitter;
+    constructor(rankingCacheService: RankingCacheService, eventEmitter: EventEmitter2);
+    notifySubscribers(playerId?: string): void;
 }

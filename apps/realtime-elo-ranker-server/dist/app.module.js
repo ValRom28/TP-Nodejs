@@ -8,6 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
+const event_emitter_1 = require("@nestjs/event-emitter");
+const database_module_1 = require("./database/database.module");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const ranking_controller_1 = require("./ranking/ranking.controller");
@@ -23,7 +25,7 @@ let AppModule = class AppModule {
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [],
+        imports: [event_emitter_1.EventEmitterModule.forRoot(), database_module_1.DatabaseModule],
         controllers: [app_controller_1.AppController, ranking_controller_1.RankingController, match_controller_1.MatchController, player_controller_1.PlayerController],
         providers: [
             app_service_1.AppService,

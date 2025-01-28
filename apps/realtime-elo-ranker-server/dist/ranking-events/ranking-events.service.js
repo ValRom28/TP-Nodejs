@@ -11,23 +11,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RankingEventsService = void 0;
 const common_1 = require("@nestjs/common");
+const event_emitter_1 = require("@nestjs/event-emitter");
 const ranking_cache_service_1 = require("../ranking-cache/ranking-cache.service");
 let RankingEventsService = class RankingEventsService {
-    constructor(rankingCacheService) {
+    constructor(rankingCacheService, eventEmitter) {
         this.rankingCacheService = rankingCacheService;
-        this.subscribers = [];
+        this.eventEmitter = eventEmitter;
     }
-    subscribe(callback) {
-        this.subscribers.push(callback);
-    }
-    notifySubscribers() {
-        const ranking = this.rankingCacheService.getAllRankings();
-        this.subscribers.forEach(callback => callback(ranking));
+    notifySubscribers(playerId) {
+        const ranking = playerId
+            ? { [playerId]: this.rankingCacheService.getRanking(playerId) }
+            : this.rankingCacheService.getAllRankings();
+        this.eventEmitter.emit('ranking.update', ranking);
     }
 };
 exports.RankingEventsService = RankingEventsService;
 exports.RankingEventsService = RankingEventsService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [ranking_cache_service_1.RankingCacheService])
+    __metadata("design:paramtypes", [ranking_cache_service_1.RankingCacheService,
+        event_emitter_1.EventEmitter2])
 ], RankingEventsService);
 //# sourceMappingURL=ranking-events.service.js.map

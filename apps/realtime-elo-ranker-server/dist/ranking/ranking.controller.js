@@ -11,16 +11,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RankingController = void 0;
 const common_1 = require("@nestjs/common");
+const rxjs_1 = require("rxjs");
+const event_emitter_1 = require("@nestjs/event-emitter");
 const ranking_service_1 = require("./ranking.service");
 const ranking_events_service_1 = require("../ranking-events/ranking-events.service");
-const rxjs_1 = require("rxjs");
 let RankingController = class RankingController {
-    constructor(rankingService, rankingEventsService) {
+    constructor(rankingService, rankingEventsService, eventEmitter) {
         this.rankingService = rankingService;
         this.rankingEventsService = rankingEventsService;
+        this.eventEmitter = eventEmitter;
         this.rankingUpdates = new rxjs_1.Subject();
-        this.rankingEventsService.subscribe((ranking) => {
-            this.rankingUpdates.next(ranking);
+        this.eventEmitter.on('ranking.update', (ranking) => {
+            for (const playerId in ranking) {
+                this.rankingUpdates.next({
+                    type: 'RankingUpdate',
+                    player: {
+                        id: playerId,
+                        rank: ranking[playerId],
+                    },
+                });
+            }
         });
     }
     getRanking() {
@@ -28,8 +38,22 @@ let RankingController = class RankingController {
     }
     subscribeToRankingUpdates() {
         return new rxjs_1.Observable((subscriber) => {
-            const subscription = this.rankingUpdates.subscribe((ranking) => {
-                subscriber.next({ data: ranking });
+            const initialRanking = this.rankingService.getRanking();
+            subscriber.next(new MessageEvent('message', {
+                data: JSON.stringify({ type: 'InitialData', ranking: initialRanking }),
+            }));
+            const subscription = this.rankingUpdates.subscribe({
+                next: (rankingUpdate) => {
+                    subscriber.next(new MessageEvent('message', {
+                        data: JSON.stringify(rankingUpdate),
+                    }));
+                },
+                error: (err) => {
+                    subscriber.error({
+                        type: 'Error',
+                        message: err.message,
+                    });
+                },
             });
             return () => subscription.unsubscribe();
         });
@@ -51,6 +75,7 @@ __decorate([
 exports.RankingController = RankingController = __decorate([
     (0, common_1.Controller)('api/ranking'),
     __metadata("design:paramtypes", [ranking_service_1.RankingService,
-        ranking_events_service_1.RankingEventsService])
+        ranking_events_service_1.RankingEventsService,
+        event_emitter_1.EventEmitter2])
 ], RankingController);
 //# sourceMappingURL=ranking.controller.js.map

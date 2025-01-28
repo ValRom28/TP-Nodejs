@@ -1,18 +1,20 @@
 import { Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { RankingCacheService } from '../ranking-cache/ranking-cache.service';
 
 @Injectable()
 export class RankingEventsService {
-  private readonly subscribers: ((ranking: Record<string, number>) => void)[] = [];
+  constructor(
+    private readonly rankingCacheService: RankingCacheService,
+    private readonly eventEmitter: EventEmitter2,
+  ) {}
 
-  constructor(private readonly rankingCacheService: RankingCacheService) {}
-
-  public subscribe(callback: (ranking: Record<string, number>) => void): void {
-    this.subscribers.push(callback);
+  public notifySubscribers(playerId?: string): void {
+    const ranking = playerId
+      ? { [playerId]: this.rankingCacheService.getRanking(playerId) }
+      : this.rankingCacheService.getAllRankings();
+  
+    this.eventEmitter.emit('ranking.update', ranking);
   }
-
-  public notifySubscribers(): void {
-    const ranking = this.rankingCacheService.getAllRankings();
-    this.subscribers.forEach(callback => callback(ranking));
-  }
+  
 }
