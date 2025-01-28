@@ -4,6 +4,7 @@ export declare class MatchService {
     private readonly rankingCacheService;
     private readonly rankingEventsService;
     private readonly matchHistory;
+    private readonly K;
     constructor(rankingCacheService: RankingCacheService, rankingEventsService: RankingEventsService);
     addMatch(winner: string, loser: string, draw: boolean): {
         winner: {
@@ -15,5 +16,7 @@ export declare class MatchService {
             rank: number;
         };
     };
+    private calculateWinProbability;
+    private calculateNewRanking;
     getMatchHistory(): string[];
 }
