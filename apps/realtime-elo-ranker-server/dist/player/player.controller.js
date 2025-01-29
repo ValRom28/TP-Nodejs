@@ -15,12 +15,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PlayerController = void 0;
 const common_1 = require("@nestjs/common");
 const player_service_1 = require("./player.service");
+const create_player_dto_1 = require("./create-player.dto");
 let PlayerController = class PlayerController {
     constructor(playerService) {
         this.playerService = playerService;
     }
-    createPlayer(body) {
-        this.playerService.createPlayer(body.id);
+    async createPlayer(createPlayerDto) {
+        if (!createPlayerDto.id) {
+            throw new common_1.HttpException('id is required', common_1.HttpStatus.BAD_REQUEST);
+        }
+        return await this.playerService.createPlayer(createPlayerDto);
     }
 };
 exports.PlayerController = PlayerController;
@@ -28,8 +32,8 @@ __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [create_player_dto_1.CreatePlayerDto]),
+    __metadata("design:returntype", Promise)
 ], PlayerController.prototype, "createPlayer", null);
 exports.PlayerController = PlayerController = __decorate([
     (0, common_1.Controller)('api/player'),

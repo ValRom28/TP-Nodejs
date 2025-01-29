@@ -33,15 +33,11 @@ let RankingController = class RankingController {
             }
         });
     }
-    getRanking() {
-        return this.rankingService.getRanking();
+    async getRanking() {
+        return await this.rankingService.getRanking();
     }
     subscribeToRankingUpdates() {
         return new rxjs_1.Observable((subscriber) => {
-            const initialRanking = this.rankingService.getRanking();
-            subscriber.next(new MessageEvent('message', {
-                data: JSON.stringify({ type: 'InitialData', ranking: initialRanking }),
-            }));
             const subscription = this.rankingUpdates.subscribe({
                 next: (rankingUpdate) => {
                     subscriber.next(new MessageEvent('message', {
@@ -64,7 +60,7 @@ __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Array)
+    __metadata("design:returntype", Promise)
 ], RankingController.prototype, "getRanking", null);
 __decorate([
     (0, common_1.Sse)('events'),

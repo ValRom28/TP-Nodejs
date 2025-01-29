@@ -15,13 +15,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MatchController = void 0;
 const common_1 = require("@nestjs/common");
 const match_service_1 = require("./match.service");
+const create_match_dto_1 = require("./create-match.dto");
 let MatchController = class MatchController {
     constructor(matchService) {
         this.matchService = matchService;
     }
-    postMatch(body) {
-        console.log(`Received body: ${JSON.stringify(body)}`);
-        return this.matchService.addMatch(body.winner, body.loser, body.draw);
+    async postMatch(createMatchDto) {
+        return await this.matchService.addMatch(createMatchDto);
+    }
+    async getMatchHistory() {
+        return await this.matchService.getMatchHistory();
     }
 };
 exports.MatchController = MatchController;
@@ -29,9 +32,15 @@ __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Object)
+    __metadata("design:paramtypes", [create_match_dto_1.CreateMatchDto]),
+    __metadata("design:returntype", Promise)
 ], MatchController.prototype, "postMatch", null);
+__decorate([
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], MatchController.prototype, "getMatchHistory", null);
 exports.MatchController = MatchController = __decorate([
     (0, common_1.Controller)('api/match'),
     __metadata("design:paramtypes", [match_service_1.MatchService])

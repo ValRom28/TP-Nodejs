@@ -1,1 +1,0 @@
-{"version":3,"file":"player.interface.js","sourceRoot":"","sources":["../../src/player/player.interface.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,qCAAwD;AAGjD,IAAM,MAAM,GAAZ,MAAM,MAAM;CAMlB,CAAA;AANY,wBAAM;AAEjB;IADC,IAAA,uBAAa,GAAE;;kCACL;AAGX;IADC,IAAA,gBAAM,EAAC,EAAE,OAAO,EAAE,IAAI,EAAE,CAAC;;oCACb;iBALF,MAAM;IADlB,IAAA,gBAAM,EAAC,QAAQ,CAAC;GACJ,MAAM,CAMlB"}

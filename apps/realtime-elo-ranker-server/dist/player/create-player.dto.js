@@ -9,20 +9,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Player = void 0;
-const typeorm_1 = require("typeorm");
-let Player = class Player {
-};
-exports.Player = Player;
+exports.CreatePlayerDto = void 0;
+const class_validator_1 = require("class-validator");
+class CreatePlayerDto {
+}
+exports.CreatePlayerDto = CreatePlayerDto;
 __decorate([
-    (0, typeorm_1.PrimaryColumn)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], Player.prototype, "id", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ default: 1200 }),
-    __metadata("design:type", Number)
-], Player.prototype, "rank", void 0);
-exports.Player = Player = __decorate([
-    (0, typeorm_1.Entity)('player')
-], Player);
-//# sourceMappingURL=player.interface.js.map
+], CreatePlayerDto.prototype, "id", void 0);
+//# sourceMappingURL=create-player.dto.js.map

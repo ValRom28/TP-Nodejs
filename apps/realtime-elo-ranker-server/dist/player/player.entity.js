@@ -9,21 +9,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RankingService = void 0;
-const common_1 = require("@nestjs/common");
-const ranking_cache_service_1 = require("../ranking-cache/ranking-cache.service");
-let RankingService = class RankingService {
-    constructor(rankingCacheService) {
-        this.rankingCacheService = rankingCacheService;
-    }
-    async getRanking() {
-        const rankings = this.rankingCacheService.getAllRankings();
-        return Object.keys(rankings).map(id => ({ id, rank: rankings[id] }));
-    }
+exports.Player = void 0;
+const typeorm_1 = require("typeorm");
+let Player = class Player {
 };
-exports.RankingService = RankingService;
-exports.RankingService = RankingService = __decorate([
-    (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [ranking_cache_service_1.RankingCacheService])
-], RankingService);
-//# sourceMappingURL=ranking.service.js.map
+exports.Player = Player;
+__decorate([
+    (0, typeorm_1.PrimaryColumn)(),
+    __metadata("design:type", String)
+], Player.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: 1200 }),
+    __metadata("design:type", Number)
+], Player.prototype, "rank", void 0);
+exports.Player = Player = __decorate([
+    (0, typeorm_1.Entity)('player')
+], Player);
+//# sourceMappingURL=player.entity.js.map

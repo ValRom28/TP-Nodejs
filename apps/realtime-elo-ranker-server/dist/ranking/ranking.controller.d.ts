@@ -8,9 +8,9 @@ export declare class RankingController {
     private readonly eventEmitter;
     private readonly rankingUpdates;
     constructor(rankingService: RankingService, rankingEventsService: RankingEventsService, eventEmitter: EventEmitter2);
-    getRanking(): {
+    getRanking(): Promise<{
         id: string;
         rank: number;
-    }[];
+    }[]>;
     subscribeToRankingUpdates(): Observable<MessageEvent>;
 }

@@ -35,18 +35,13 @@ export class RankingController {
   }
 
   @Get()
-  getRanking(): { id: string, rank: number }[] {
-    return this.rankingService.getRanking();
+  async getRanking(): Promise<{ id: string, rank: number }[]> {
+    return await this.rankingService.getRanking();
   }
 
   @Sse('events')
   subscribeToRankingUpdates(): Observable<MessageEvent> {
     return new Observable((subscriber) => {
-      const initialRanking = this.rankingService.getRanking();
-      subscriber.next(new MessageEvent('message', {
-        data: JSON.stringify({ type: 'InitialData', ranking: initialRanking }),
-      }));
-
       const subscription = this.rankingUpdates.subscribe({
         next: (rankingUpdate) => {
           subscriber.next(new MessageEvent('message', {
@@ -61,8 +56,7 @@ export class RankingController {
         },
       });
 
-    return () => subscription.unsubscribe();
-  });
-}
-
+      return () => subscription.unsubscribe();
+    });
+  }
 }

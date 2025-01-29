@@ -9,21 +9,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RankingService = void 0;
-const common_1 = require("@nestjs/common");
-const ranking_cache_service_1 = require("../ranking-cache/ranking-cache.service");
-let RankingService = class RankingService {
-    constructor(rankingCacheService) {
-        this.rankingCacheService = rankingCacheService;
-    }
-    async getRanking() {
-        const rankings = this.rankingCacheService.getAllRankings();
-        return Object.keys(rankings).map(id => ({ id, rank: rankings[id] }));
-    }
-};
-exports.RankingService = RankingService;
-exports.RankingService = RankingService = __decorate([
-    (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [ranking_cache_service_1.RankingCacheService])
-], RankingService);
-//# sourceMappingURL=ranking.service.js.map
+exports.CreateMatchDto = void 0;
+const class_validator_1 = require("class-validator");
+class CreateMatchDto {
+}
+exports.CreateMatchDto = CreateMatchDto;
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateMatchDto.prototype, "winner", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateMatchDto.prototype, "loser", void 0);
+__decorate([
+    (0, class_validator_1.IsBoolean)(),
+    __metadata("design:type", Boolean)
+], CreateMatchDto.prototype, "draw", void 0);
+//# sourceMappingURL=create-match.dto.js.map
