@@ -16,5 +16,8 @@ export class RankingEventsService {
   
     this.eventEmitter.emit('ranking.update', ranking);
   }
-  
+
+  onModuleDestroy() {
+    this.eventEmitter.removeAllListeners('ranking.update');
+  }  
 }

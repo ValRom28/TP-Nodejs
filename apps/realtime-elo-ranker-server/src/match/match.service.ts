@@ -27,7 +27,7 @@ export class MatchService {
 
     const winnerPlayer = await this.playerRepository.findOne({ where: { id: winner } });
     const loserPlayer = await this.playerRepository.findOne({ where: { id: loser } });
-
+    
     if (!winnerPlayer || !loserPlayer) {
       throw new Error('Winner or loser player not found');
     }
@@ -38,8 +38,15 @@ export class MatchService {
     const expectedWinner = 1 / (1 + Math.pow(10, (rankingLoser - rankingWinner) / 400));
     const expectedLoser = 1 / (1 + Math.pow(10, (rankingWinner - rankingLoser) / 400));
 
-    const scoreWinner = draw ? 0.5 : 1;
-    const scoreLoser = draw ? 0.5 : 0;
+    let scoreWinner, scoreLoser;
+
+    if (draw) {
+      scoreWinner = 0.5;
+      scoreLoser = 0.5;
+    } else {
+      scoreWinner = 1;
+      scoreLoser = 0;
+    }
 
     rankingWinner = Math.round(rankingWinner + this.K * (scoreWinner - expectedWinner));
     rankingLoser = Math.round(rankingLoser + this.K * (scoreLoser - expectedLoser));

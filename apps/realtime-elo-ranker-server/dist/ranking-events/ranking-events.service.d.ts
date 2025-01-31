@@ -5,4 +5,5 @@ export declare class RankingEventsService {
     private readonly eventEmitter;
     constructor(rankingCacheService: RankingCacheService, eventEmitter: EventEmitter2);
     notifySubscribers(playerId?: string): void;
+    onModuleDestroy(): void;
 }

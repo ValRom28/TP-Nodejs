@@ -39,8 +39,15 @@ let MatchService = class MatchService {
         let rankingLoser = this.rankingCacheService.getRanking(loser) ?? 1000;
         const expectedWinner = 1 / (1 + Math.pow(10, (rankingLoser - rankingWinner) / 400));
         const expectedLoser = 1 / (1 + Math.pow(10, (rankingWinner - rankingLoser) / 400));
-        const scoreWinner = draw ? 0.5 : 1;
-        const scoreLoser = draw ? 0.5 : 0;
+        let scoreWinner, scoreLoser;
+        if (draw) {
+            scoreWinner = 0.5;
+            scoreLoser = 0.5;
+        }
+        else {
+            scoreWinner = 1;
+            scoreLoser = 0;
+        }
         rankingWinner = Math.round(rankingWinner + this.K * (scoreWinner - expectedWinner));
         rankingLoser = Math.round(rankingLoser + this.K * (scoreLoser - expectedLoser));
         this.rankingCacheService.setRanking(winner, rankingWinner);

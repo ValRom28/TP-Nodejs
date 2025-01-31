@@ -24,6 +24,9 @@ let RankingEventsService = class RankingEventsService {
             : this.rankingCacheService.getAllRankings();
         this.eventEmitter.emit('ranking.update', ranking);
     }
+    onModuleDestroy() {
+        this.eventEmitter.removeAllListeners('ranking.update');
+    }
 };
 exports.RankingEventsService = RankingEventsService;
 exports.RankingEventsService = RankingEventsService = __decorate([

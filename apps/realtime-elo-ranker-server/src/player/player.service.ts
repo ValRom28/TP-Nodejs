@@ -37,7 +37,7 @@ export class PlayerService implements OnModuleInit {
 
     this.rankingCacheService.setRanking(id, player.rank);
 
-    this.rankingEventsService.notifySubscribers();
+    this.rankingEventsService.notifySubscribers(id);
 
     return { id: player.id, rank: player.rank };
   }
