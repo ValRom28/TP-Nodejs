@@ -31,8 +31,8 @@ import { Match } from './match/match.entity';
     RankingService,
     MatchService,
     PlayerService,
-    RankingEventsService,
     RankingCacheService,
+    RankingEventsService,
   ],
 })
 export class AppModule {}

@@ -8,6 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RankingEventsService = void 0;
 const common_1 = require("@nestjs/common");
@@ -31,6 +34,7 @@ let RankingEventsService = class RankingEventsService {
 exports.RankingEventsService = RankingEventsService;
 exports.RankingEventsService = RankingEventsService = __decorate([
     (0, common_1.Injectable)(),
+    __param(0, (0, common_1.Inject)((0, common_1.forwardRef)(() => ranking_cache_service_1.RankingCacheService))),
     __metadata("design:paramtypes", [ranking_cache_service_1.RankingCacheService,
         event_emitter_1.EventEmitter2])
 ], RankingEventsService);

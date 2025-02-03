@@ -8,7 +8,7 @@ import { CreatePlayerDto } from './create-player.dto';
 import { ResponsePlayerDto } from './response-player.dto';
 
 @Injectable()
-export class PlayerService implements OnModuleInit {
+export class PlayerService {
   constructor(
     @InjectRepository(Player)
     private readonly playerRepository: Repository<Player>,
@@ -16,22 +16,13 @@ export class PlayerService implements OnModuleInit {
     private readonly rankingEventsService: RankingEventsService
   ) {}
 
-  async onModuleInit() {
-    // Charger les joueurs en mémoire au démarrage
-    const players = await this.playerRepository.find();
-    console.log(players);
-    players.forEach(player => {
-      this.rankingCacheService.setRanking(player.id, player.rank);
-    });
-  }
-
   async createPlayer(createPlayerDto: CreatePlayerDto): Promise<ResponsePlayerDto> {
     const { id } = createPlayerDto;
 
     let player = await this.playerRepository.findOne({ where: { id } });
 
     if (!player) {
-      player = this.playerRepository.create({ id, rank: 1000 });
+      player = this.playerRepository.create({ id });
       await this.playerRepository.save(player);
     }
 

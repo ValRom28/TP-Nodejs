@@ -25,22 +25,15 @@ let PlayerService = class PlayerService {
         this.rankingCacheService = rankingCacheService;
         this.rankingEventsService = rankingEventsService;
     }
-    async onModuleInit() {
-        const players = await this.playerRepository.find();
-        console.log(players);
-        players.forEach(player => {
-            this.rankingCacheService.setRanking(player.id, player.rank);
-        });
-    }
     async createPlayer(createPlayerDto) {
         const { id } = createPlayerDto;
         let player = await this.playerRepository.findOne({ where: { id } });
         if (!player) {
-            player = this.playerRepository.create({ id, rank: 1000 });
+            player = this.playerRepository.create({ id });
             await this.playerRepository.save(player);
         }
         this.rankingCacheService.setRanking(id, player.rank);
-        this.rankingEventsService.notifySubscribers();
+        this.rankingEventsService.notifySubscribers(id);
         return { id: player.id, rank: player.rank };
     }
 };

@@ -39,8 +39,8 @@ exports.AppModule = AppModule = __decorate([
             ranking_service_1.RankingService,
             match_service_1.MatchService,
             player_service_1.PlayerService,
-            ranking_events_service_1.RankingEventsService,
             ranking_cache_service_1.RankingCacheService,
+            ranking_events_service_1.RankingEventsService,
         ],
     })
 ], AppModule);
