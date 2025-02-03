@@ -26,9 +26,17 @@ let RankingCacheService = class RankingCacheService {
         this.saveInterval = setInterval(() => this.saveCacheToDatabase(), 5 * 60 * 1000);
     }
     getRanking(id) {
-        return this.rankingData[id];
+        const rank = this.rankingData[id];
+        if (rank !== undefined) {
+            console.log('[CACHE] Récupération du classement en cache pour le joueur', id);
+        }
+        else {
+            console.log('[CACHE MISS] Classement non trouvé en cache pour le joueur', id);
+        }
+        return rank;
     }
     setRanking(id, ranking) {
+        console.log('[CACHE SET] Mise à jour du classement en cache pour le joueur', id);
         this.rankingData[id] = ranking;
     }
     getAllRankings() {

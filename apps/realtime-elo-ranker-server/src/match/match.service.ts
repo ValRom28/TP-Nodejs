@@ -10,7 +10,7 @@ import { ResponseMatchDto } from './response-match.dto';
 
 @Injectable()
 export class MatchService {
-  private readonly K: number = 32;
+  private readonly K: number = 32; // Facteur K, peut être ajusté selon le niveau des joueurs
 
   constructor(
     @InjectRepository(Match)
@@ -21,13 +21,12 @@ export class MatchService {
     private readonly rankingEventsService: RankingEventsService,
   ) {}
 
-
   async addMatch(createMatchDto: CreateMatchDto): Promise<ResponseMatchDto> {
     const { winner, loser, draw } = createMatchDto;
 
     const winnerPlayer = await this.playerRepository.findOne({ where: { id: winner } });
     const loserPlayer = await this.playerRepository.findOne({ where: { id: loser } });
-    
+
     if (!winnerPlayer || !loserPlayer) {
       throw new Error('Winner or loser player not found');
     }
@@ -76,7 +75,6 @@ export class MatchService {
     };
   }
 
-  
   async getMatchHistory(): Promise<{ id: number; winner: string; loser: string; draw: boolean }[]> {
     const matches = await this.matchRepository.find({ relations: ['winner', 'loser'] });
     return matches.map(match => ({

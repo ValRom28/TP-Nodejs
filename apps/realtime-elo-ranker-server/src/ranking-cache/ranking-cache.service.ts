@@ -19,7 +19,8 @@ export class RankingCacheService implements OnModuleDestroy, OnModuleInit {
   }
 
   public getRanking(id: string): number | undefined {
-    return this.rankingData[id];
+    const rank = this.rankingData[id];
+    return rank;
   }
 
   public setRanking(id: string, ranking: number): void {
