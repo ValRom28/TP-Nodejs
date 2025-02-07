@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1738677652070" clover="3.2.0">
+  <project timestamp="1738677652070" name="All files">
+    <metrics statements="10" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="0" elements="13" coveredelements="0" complexity="0" loc="10" ncloc="10" packages="1" files="1" classes="1"/>
+    <file name="app.e2e-spec.ts" path="/home/vromanet/IUT/BUT3/realtime-elo-ranker-master/apps/realtime-elo-ranker-server/test/app.e2e-spec.ts">
+      <metrics statements="10" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="0"/>
+      <line num="1" count="0" type="stmt"/>
+      <line num="3" count="0" type="stmt"/>
+      <line num="5" count="0" type="stmt"/>
+      <line num="7" count="0" type="stmt"/>
+      <line num="10" count="0" type="stmt"/>
+      <line num="11" count="0" type="stmt"/>
+      <line num="15" count="0" type="stmt"/>
+      <line num="16" count="0" type="stmt"/>
+      <line num="19" count="0" type="stmt"/>
+      <line num="20" count="0" type="stmt"/>
+    </file>
+  </project>
+</coverage>

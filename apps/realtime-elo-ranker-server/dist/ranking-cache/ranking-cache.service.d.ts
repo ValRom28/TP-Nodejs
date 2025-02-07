@@ -8,7 +8,7 @@ export declare class RankingCacheService implements OnModuleDestroy, OnModuleIni
     private rankingData;
     private readonly saveInterval;
     constructor(playerRepository: Repository<Player>, rankingEventsService: RankingEventsService);
-    getRanking(id: string): number | undefined;
+    getRanking(id: string): number;
     setRanking(id: string, ranking: number): void;
     getAllRankings(): Record<string, number>;
     private saveCacheToDatabase;

@@ -27,23 +27,15 @@ let RankingCacheService = class RankingCacheService {
     }
     getRanking(id) {
         const rank = this.rankingData[id];
-        if (rank !== undefined) {
-            console.log('[CACHE] Récupération du classement en cache pour le joueur', id);
-        }
-        else {
-            console.log('[CACHE MISS] Classement non trouvé en cache pour le joueur', id);
-        }
         return rank;
     }
     setRanking(id, ranking) {
-        console.log('[CACHE SET] Mise à jour du classement en cache pour le joueur', id);
         this.rankingData[id] = ranking;
     }
     getAllRankings() {
         return this.rankingData;
     }
     async saveCacheToDatabase() {
-        console.log('Sauvegarde du cache en base...');
         const players = await this.playerRepository.find();
         for (const player of players) {
             if (this.rankingData[player.id] !== undefined) {
@@ -51,7 +43,6 @@ let RankingCacheService = class RankingCacheService {
             }
         }
         await this.playerRepository.save(players);
-        console.log('Cache sauvegardé en base.');
     }
     async onModuleInit() {
         const players = await this.playerRepository.find();

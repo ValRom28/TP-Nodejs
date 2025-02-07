@@ -18,7 +18,7 @@ export class RankingCacheService implements OnModuleDestroy, OnModuleInit {
     this.saveInterval = setInterval(() => this.saveCacheToDatabase(), 5 * 60 * 1000);
   }
 
-  public getRanking(id: string): number | undefined {
+  public getRanking(id: string): number {
     const rank = this.rankingData[id];
     return rank;
   }
@@ -33,7 +33,6 @@ export class RankingCacheService implements OnModuleDestroy, OnModuleInit {
 
   // Sauvegarde du cache en base
   private async saveCacheToDatabase(): Promise<void> {
-    console.log('Sauvegarde du cache en base...');
     const players = await this.playerRepository.find();
 
     for (const player of players) {
@@ -43,7 +42,6 @@ export class RankingCacheService implements OnModuleDestroy, OnModuleInit {
     }
 
     await this.playerRepository.save(players);
-    console.log('Cache sauvegardé en base.');
   }
 
   async onModuleInit() {
