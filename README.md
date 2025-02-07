@@ -51,6 +51,12 @@ Lancer l'application :
 pnpm run apps:client:dev
 ```
 
+**Puis lancer le serveur de l'application :**
+
+```bash
+pnpm run apps:server:dev
+```
+
 ## Lancer la doc swagger
 
 ```bash
@@ -62,6 +68,12 @@ Le serveur Swagger sera accessible à l'adresse `http://localhost:3001/api-docs`
 Le serveur est en hot-reload : les modifications apportées au `swagger.yaml` seront automatiquement prises en compte.
 
 **Note :** Si le live-reload ne fonctionne pas, pensez à forwarder le port `35729` dans l'IDE.
+
+## Lancer les tests
+
+```bash
+pnpm run test
+```
 
 ## Lancer le mock de l'API
 
