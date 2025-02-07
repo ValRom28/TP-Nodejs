@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { RankingService } from './ranking.service';
 import { RankingCacheService } from '../ranking-cache/ranking-cache.service';
 import { RankingEventsService } from '../ranking-events/ranking-events.service';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { Player } from '../player/player.entity';
-import { Repository } from 'typeorm';
 
 describe('RankingService', () => {
   let service: RankingService;
@@ -25,6 +25,7 @@ describe('RankingService', () => {
           useValue: {
             getRanking: jest.fn().mockReturnValue(1000),
             setRanking: jest.fn(),
+            getAllRankings: jest.fn().mockReturnValue({ player1: 1000, player2: 1100 }),
           },
         },
         {
@@ -37,23 +38,17 @@ describe('RankingService', () => {
     }).compile();
 
     service = module.get<RankingService>(RankingService);
-    rankingCacheService = module.get<RankingCacheService>(RankingCacheService);
-    rankingEventsService = module.get<RankingEventsService>(RankingEventsService);
-    playerRepository = module.get<Repository<Player>>(getRepositoryToken(Player));
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  it('should update player ranking and notify subscribers', async () => {
-    const playerId = 'player1';
-    const newRank = 1050;
-
-    jest.spyOn(playerRepository, 'findOne').mockResolvedValue({ id: playerId, rank: 1000 } as Player);
-    await service.updatePlayerRanking(playerId, newRank);
-
-    expect(rankingCacheService.setRanking).toHaveBeenCalledWith(playerId, newRank);
-    expect(rankingEventsService.notifySubscribers).toHaveBeenCalled();
+  it('should get ranking', async () => {
+    const ranking = await service.getRanking();
+    expect(ranking).toEqual([
+      { id: 'player1', rank: 1000 },
+      { id: 'player2', rank: 1100 },
+    ]);
   });
 });

@@ -1,12 +1,38 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RankingCacheService } from './ranking-cache.service';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Player } from '../player/player.entity';
+import { RankingEventsService } from '../ranking-events/ranking-events.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 describe('RankingCacheService', () => {
   let service: RankingCacheService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [RankingCacheService],
+      providers: [
+        RankingCacheService,
+        {
+          provide: getRepositoryToken(Player),
+          useValue: {
+            find: jest.fn().mockResolvedValue([]),
+            save: jest.fn(),
+          },
+        },
+        {
+          provide: RankingEventsService,
+          useValue: {
+            notifySubscribers: jest.fn(),
+          },
+        },
+        {
+          provide: EventEmitter2,
+          useValue: {
+            emit: jest.fn(),
+            removeAllListeners: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
     service = module.get<RankingCacheService>(RankingCacheService);
@@ -16,20 +42,17 @@ describe('RankingCacheService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should get ranking from cache', async () => {
+  it('should get ranking from cache', () => {
     const playerId = 'player1';
-    // Mock the method and define its return type explicitly
-    jest.spyOn(service, 'getRanking').mockResolvedValue(1200 as number); // Cast to number
-    const result = await service.getRanking(playerId);
-    expect(result).toBe(1200); // Fixed value to 1200 (correct the expectation)
-    expect(service.getRanking).toHaveBeenCalledWith(playerId);
+    service.setRanking(playerId, 1200); // Set ranking in cache
+    const result = service.getRanking(playerId);
+    expect(result).toBe(1200);
   });
-  
 
-  it('should set ranking in cache', async () => {
+  it('should set ranking in cache', () => {
     const playerId = 'player1';
     const newRank = 1100;
-    await service.setRanking(playerId, newRank);
-    expect(service.setRanking).toHaveBeenCalledWith(playerId, newRank);
+    service.setRanking(playerId, newRank);
+    expect(service.getRanking(playerId)).toBe(newRank);
   });
 });

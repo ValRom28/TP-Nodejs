@@ -31,6 +31,7 @@ describe('RankingController', () => {
           provide: EventEmitter2,
           useValue: {
             emit: jest.fn(),
+            on: jest.fn(),
           },
         },
       ],
@@ -44,8 +45,8 @@ describe('RankingController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('should get ranking', () => {
-    const result = controller.getRanking();
+  it('should get ranking', async () => {
+    const result = await controller.getRanking();
     expect(result).toEqual([
       { id: 'player1', rank: 1000 },
       { id: 'player2', rank: 1100 },

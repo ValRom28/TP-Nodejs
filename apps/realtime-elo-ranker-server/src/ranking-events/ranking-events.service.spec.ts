@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RankingEventsService } from './ranking-events.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { RankingCacheService } from '../ranking-cache/ranking-cache.service';
 
 describe('RankingEventsService', () => {
   let service: RankingEventsService;
@@ -11,9 +12,17 @@ describe('RankingEventsService', () => {
       providers: [
         RankingEventsService,
         {
+          provide: RankingCacheService,
+          useValue: {
+            getRanking: jest.fn().mockReturnValue(1000),
+            getAllRankings: jest.fn().mockReturnValue({ player1: 1000 }),
+          },
+        },
+        {
           provide: EventEmitter2,
           useValue: {
             emit: jest.fn(),
+            removeAllListeners: jest.fn(),
           },
         },
       ],
@@ -28,8 +37,13 @@ describe('RankingEventsService', () => {
   });
 
   it('should notify subscribers on ranking update', () => {
-    const mockRanking = { playerId: 'player1', rank: 1000 };
-    service.notifySubscribers(mockRanking.playerId);
-    expect(eventEmitter.emit).toHaveBeenCalledWith('rankingUpdated', mockRanking);
+    const playerId = 'player1';
+    service.notifySubscribers(playerId);
+    expect(eventEmitter.emit).toHaveBeenCalledWith('ranking.update', { [playerId]: 1000 });
+  });
+
+  it('should remove all listeners on module destroy', () => {
+    service.onModuleDestroy();
+    expect(eventEmitter.removeAllListeners).toHaveBeenCalledWith('ranking.update');
   });
 });
